@@ -1,7 +1,11 @@
-/*
- * NOTE
+/**
+ * @brief Implementation of public libtcv interface
+ * @file tcv.c
+ *
+ * NOTE:
  * This file is based on SFF-8472 rev11.3 and INF-8077i rev4.5.
  * It's an MSA translation.
+ *
  */
 
 #include <stdlib.h>
@@ -858,7 +862,7 @@ int tcv_read(tcv_t *tcv, uint8_t devaddr, uint8_t regaddr, uint8_t* data, size_t
 
 /******************************************************************************/
 
-int tcv_write(tcv_t *tcv, uint8_t devaddr, uint8_t regaddr, uint8_t* data, size_t len)
+int tcv_write(tcv_t *tcv, uint8_t devaddr, uint8_t regaddr, const uint8_t* data, size_t len)
 {
 	int ret = TCV_ERR_NOT_INITIALIZED;
 
@@ -873,3 +877,131 @@ int tcv_write(tcv_t *tcv, uint8_t devaddr, uint8_t regaddr, uint8_t* data, size_
 	return ret;
 }
 
+/******************************************************************************/
+int tcv_get_temperature(tcv_t* tcv, int16_t* temp)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !temp)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_temp)
+		ret = tcv->fun->get_temp(tcv, temp);
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+int tcv_get_voltage(tcv_t* tcv, uint16_t* vcc)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !vcc)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_voltage)
+		ret = tcv->fun->get_voltage(tcv, vcc);
+
+	tcv_unlock(tcv);
+	return ret;
+
+}
+
+/******************************************************************************/
+int tcv_get_tx_cur(tcv_t* tcv, uint16_t* cur)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !cur)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_tx_cur)
+		ret = tcv->fun->get_tx_cur(tcv, cur);
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+int tcv_get_rx_pwr(tcv_t* tcv, uint16_t* pwr)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !pwr)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_rx_pwr)
+		ret = tcv->fun->get_rx_pwr(tcv, pwr);
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+int tcv_get_tx_pwr(tcv_t* tcv, uint16_t* pwr)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !pwr)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_tx_pwr)
+		ret = tcv->fun->get_tx_pwr(tcv, pwr);
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+int tcv_get_temp_warning(tcv_t* tcv, uint16_t* threshold)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !threshold)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_temp_high_warning)
+		ret = tcv->fun->get_temp_high_warning(tcv, threshold);
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+int tcv_get_rx_pwr_warning(tcv_t* tcv, uint16_t* threshold)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !threshold)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_rx_pwr_high_warning)
+		ret = tcv->fun->get_rx_pwr_high_warning(tcv, threshold);
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+int tcv_get_tx_pwr_warning(tcv_t* tcv, uint16_t* threshold)
+{
+	/* Not all have Digital diagnostics */
+	int ret = TCV_ERR_FEATURE_NOT_AVAILABLE;
+
+	if (!tcv_check_and_lock_ok(tcv) || !threshold)
+		return TCV_ERR_INVALID_ARG;
+
+	if (tcv->fun->get_tx_pwr_high_warning)
+		ret = tcv->fun->get_tx_pwr_high_warning(tcv, threshold);
+
+	tcv_unlock(tcv);
+	return ret;
+}
