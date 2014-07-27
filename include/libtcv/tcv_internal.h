@@ -88,7 +88,16 @@ struct tcv_functions {
 	int (*get_implemented_options)(tcv_t *, tcv_implemented_options_t *);
 	const uint8_t* (*get_8079_rom)(tcv_t *);
 	int (*raw_read)(tcv_t *, uint8_t, uint8_t, uint8_t*, size_t);
-	int (*raw_write)(tcv_t *, uint8_t, uint8_t, uint8_t*, size_t);
+	int (*raw_write)(tcv_t *, uint8_t, uint8_t, const uint8_t*, size_t);
+	/* digital diagnostics */
+	int (*get_rx_pwr)(tcv_t*, uint16_t*);
+	int (*get_tx_pwr)(tcv_t*, uint16_t*);
+	int (*get_tx_cur)(tcv_t*, uint16_t*);
+	int (*get_temp)(tcv_t*, int16_t*);
+	int (*get_voltage)(tcv_t*, uint16_t*);
+	int (*get_temp_high_warning)(tcv_t*, uint16_t*);
+	int (*get_tx_pwr_high_warning)(tcv_t*, uint16_t*);
+	int (*get_rx_pwr_high_warning)(tcv_t*, uint16_t*);
 };
 /******************************************************************************/
 
