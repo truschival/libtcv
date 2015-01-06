@@ -1,4 +1,29 @@
 /*
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 George Redivo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+/*
  * TestDut.cpp
  *
  *  Created on: Jul 3, 2013
@@ -162,40 +187,6 @@ TEST_F(TestFixtureClass, extendedIdent)
 	mtcv->manip_eeprom(1, vector<uint8_t>(1, 0x4));
 	tcv_init(tcv);
 	EXPECT_EQ(0x04,tcv_get_ext_identifier(tcv));
-}
-
-
-/* Test for diagnositcs type */
-TEST_F(TestFixtureClass, diagnosticsTypeValid)
-{
-	auto mtcv = get_tcv(1);
-	tcv_t *tcv = mtcv->get_ctcv();
-	uint8_t diag_caps = 0x60;
-	tcv_diagnostic_type_t diags;
-	mtcv->manip_eeprom(92, diag_caps);
-	tcv_init(tcv);
-	EXPECT_EQ(0, tcv_get_diagnostic_type(tcv, &diags));
-
-	EXPECT_EQ(diags.bits.address_change_required, 0);
-	EXPECT_EQ(diags.bits.pwr_measurement_type, 0);
-	EXPECT_EQ(diags.bits.internally_calibrated, 1);
-	EXPECT_EQ(diags.bits.externally_calibrated, 0);
-	EXPECT_EQ(diags.bits.dd_implemented, 1);
-
-}
-
-/* Test for diagnositcs type */
-TEST_F(TestFixtureClass, diagnosticsTypeInValid)
-{
-	auto mtcv = get_tcv(1);
-	tcv_t *tcv = mtcv->get_ctcv();
-	uint8_t diag_caps = 0xFF;
-	tcv_diagnostic_type_t diags;
-	mtcv->manip_eeprom(92,  diag_caps);
-	tcv_init(tcv);
-	EXPECT_EQ(0, tcv_get_diagnostic_type(tcv, &diags));
-	/* Function should truncate invalid crap */
-	EXPECT_EQ(diags.bmp, 0x1F);
 }
 
 

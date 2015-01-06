@@ -1,11 +1,32 @@
-/**
- * @brief Implementation of public libtcv interface
- * @file tcv.c
+/*
+ * The MIT License (MIT)
  *
- * NOTE:
+ * Copyright (c) 2014 George Redivo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+/*
+ * NOTE
  * This file is based on SFF-8472 rev11.3 and INF-8077i rev4.5.
  * It's an MSA translation.
- *
  */
 
 #include <stdlib.h>
@@ -47,9 +68,8 @@ static bool tcv_is_initialized(tcv_t *tcv)
 }
 /******************************************************************************/
 
-/******************************************************************************/
 /**
- * Check if tcv is exists/is valid and lock for exclusive access
+ * Check if tcv exists/is valid and lock for exclusive access
  * @param tcv
  * @return
  */
@@ -820,6 +840,39 @@ size_t tcv_get_vendor_rom_size(tcv_t *tcv)
 	if (tcv_is_initialized(tcv)) {
 		ret = tcv->fun->get_vendor_rom_size(tcv);
 	}
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+
+const uint8_t* tcv_get_user_writable_eeprom(tcv_t *tcv)
+{
+	const uint8_t *ret = NULL;
+
+	if (!tcv_check_and_lock_ok(tcv))
+		return NULL ;
+
+	if (tcv_is_initialized(tcv)) {
+		ret = tcv->fun->get_user_writable_eeprom(tcv);
+	}
+
+	tcv_unlock(tcv);
+	return ret;
+}
+
+/******************************************************************************/
+
+size_t tcv_get_user_writable_eeprom_size(tcv_t *tcv)
+{
+	int ret = 0;
+
+	if (!tcv_check_and_lock_ok(tcv))
+		return 0;
+
+	if (tcv->fun->get_user_writable_eeprom_size)
+		ret = tcv->fun->get_user_writable_eeprom_size(tcv);
 
 	tcv_unlock(tcv);
 	return ret;

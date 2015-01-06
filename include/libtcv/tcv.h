@@ -1,11 +1,34 @@
 /**
- * @brief Public Header to include in Client programs
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 George Redivo
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+/*
+ * Public Header to include in Client programs
  *
  * NOTE
  * This file is based on SFF-8472 rev11.3 and INF-8077i rev4.5.
  * It's an MSA translation.
- *
- * This file is not Datacom internal - retrieved form github.com/redivo/libtcv
  */
 
 #ifndef __LIBTCV_TCV_H__
@@ -1014,6 +1037,24 @@ const uint8_t* tcv_get_vendor_rom(tcv_t *tcv);
  * \return	32 for SFP and XFP, 0 if invalid/non-existent
  */
 size_t tcv_get_vendor_rom_size(tcv_t *tcv);
+
+/******************************************************************************/
+
+/**
+ * \brief	Allow direct access to user writable eeprom area of page a2
+ * \param	tcv Pointer to transceiver structure
+ * \return	memory at byte 128-247 of page a2
+ */
+const uint8_t* tcv_get_user_writable_eeprom(tcv_t *tcv);
+
+/******************************************************************************/
+
+/**
+ * \brief	Inform the size of user writable eeprom area of page a2
+ * \param	tcv Pointer to transceiver structure
+ * \return	size of writable eeprom area of page a2
+ */
+size_t tcv_get_user_writable_eeprom_size(tcv_t *tcv);
 
 /******************************************************************************/
 /**
